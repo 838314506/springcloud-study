@@ -1,0 +1,10 @@
+server:
+  port: 8111
+spring:
+  application:
+    name: springcloud-study
+  cloud:
+    consul:
+      discovery:
+        port: 8080
+        hostname: localhost
