@@ -6,7 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.concurrent.Future;
 
 @RestController
@@ -20,6 +23,9 @@ public class TaskController {
     @GetMapping("/asyncExecuter")
     public String asyncExecuter(){
         try {
+            ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+            HttpServletRequest request = requestAttributes.getRequest();
+            log.info("当前线程为 {}，请求方法为 {}，请求路径为：{}", Thread.currentThread().getName(), request.getMethod(), request.getRequestURL().toString());
             Future<String> t1 = taskService.asyncExecute1();
             Future<String> t2 = taskService.asyncExecute2();
             Future<String> t3 = taskService.asyncExecute3();
